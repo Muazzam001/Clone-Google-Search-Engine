@@ -1,15 +1,13 @@
 -- phpMyAdmin SQL Dump
--- version 4.8.2
+-- version 4.6.4
 -- https://www.phpmyadmin.net/
 --
--- Máy chủ: 127.0.0.1
--- Thời gian đã tạo: Th7 17, 2018 lúc 09:02 AM
--- Phiên bản máy phục vụ: 10.1.34-MariaDB
--- Phiên bản PHP: 7.2.7
+-- Host: 127.0.0.1
+-- Generation Time: Nov 27, 2018 at 12:00 PM
+-- Server version: 5.7.14
+-- PHP Version: 5.6.25
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
-SET AUTOCOMMIT = 0;
-START TRANSACTION;
 SET time_zone = "+00:00";
 
 
@@ -19,13 +17,13 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Cơ sở dữ liệu: `db_google`
+-- Database: `db_google`
 --
 
 -- --------------------------------------------------------
 
 --
--- Cấu trúc bảng cho bảng `images`
+-- Table structure for table `images`
 --
 
 CREATE TABLE `images` (
@@ -41,7 +39,7 @@ CREATE TABLE `images` (
 -- --------------------------------------------------------
 
 --
--- Cấu trúc bảng cho bảng `sites`
+-- Table structure for table `sites`
 --
 
 CREATE TABLE `sites` (
@@ -50,42 +48,72 @@ CREATE TABLE `sites` (
   `title` varchar(512) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
   `description` varchar(512) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
   `keywords` varchar(512) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
-  `clicks` int(11) NOT NULL
+  `clicks` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+-- --------------------------------------------------------
+
 --
--- Chỉ mục cho các bảng đã đổ
+-- Table structure for table `submit_url`
+--
+
+CREATE TABLE `submit_url` (
+  `id` int(11) NOT NULL,
+  `url` varchar(512) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `submit_url`
+--
+
+INSERT INTO `submit_url` (`id`, `url`) VALUES
+(1, 'https://www.24h.com.vn/'),
+(2, 'https://buddydev.com/'),
+(3, 'http://xplore.pk/'),
+(4, 'https://www.heraldlynx.com/'),
+(5, 'https://www.dexndev.com/');
+
+--
+-- Indexes for dumped tables
 --
 
 --
--- Chỉ mục cho bảng `images`
+-- Indexes for table `images`
 --
 ALTER TABLE `images`
   ADD PRIMARY KEY (`id`);
 
 --
--- Chỉ mục cho bảng `sites`
+-- Indexes for table `sites`
 --
 ALTER TABLE `sites`
   ADD PRIMARY KEY (`id`);
 
 --
--- AUTO_INCREMENT cho các bảng đã đổ
+-- Indexes for table `submit_url`
+--
+ALTER TABLE `submit_url`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- AUTO_INCREMENT for dumped tables
 --
 
 --
--- AUTO_INCREMENT cho bảng `images`
+-- AUTO_INCREMENT for table `images`
 --
 ALTER TABLE `images`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
-
 --
--- AUTO_INCREMENT cho bảng `sites`
+-- AUTO_INCREMENT for table `sites`
 --
 ALTER TABLE `sites`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
-COMMIT;
-
+--
+-- AUTO_INCREMENT for table `submit_url`
+--
+ALTER TABLE `submit_url`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
