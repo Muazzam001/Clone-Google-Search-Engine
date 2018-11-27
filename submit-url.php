@@ -32,7 +32,8 @@
             $("#buttonSubmit").prop('disabled', true);
             $.ajax({
                 type: 'post',
-                url: 'crawl.php',
+				// updated ajax request file name here
+                url: 'insert.php',
                 data: $('form').serialize(),
                 success: function () {
                     $("#buttonSubmit").text('disabled', false);
