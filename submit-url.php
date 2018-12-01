@@ -26,6 +26,13 @@
 </div>
 <script>
     $(document).ready(function() {
+        function resetForm(formid) {
+            $('#' + formid + ' :input').each(function(){  
+                $(this).val('').attr('checked',false).attr('selected',false);
+                $('#buttonSubmit').val('Submit').attr('checked',false).attr('selected',false);
+            });
+        }        
+
         $("#formSubmitUrl").submit(function (e) {
             e.preventDefault();
             $( ".textGradient" ).text( "Processing Please wait..." );
@@ -38,6 +45,11 @@
                 success: function () {
                     $("#buttonSubmit").prop('disabled', false);
                     $( ".textGradient" ).html( "The system has received the url" );
+                    setTimeout(function() {
+                        resetForm('formSubmitUrl');
+                        $(".textGradient").html("");
+                        $('#buttonSubmit').attr('value', 'Submit');
+                    }, 5000);
                 }
             });
         })
