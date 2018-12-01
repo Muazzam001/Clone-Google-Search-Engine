@@ -4,11 +4,13 @@ include('classes/DomDocumentParser.php');
 $alreadyCrawled = array();
 $crawling = array();
 $alreadyFoundImages = array();
+$title = '';
+$indexed = 0;
 
 if(isset($_POST['url'])){
     $start_url = $_POST['url'];
-    insertLink($start_url);
     followLinks($start_url);
+    insertLink($start_url, $title, $indexed);
 }
 
 function linkExists($url){
@@ -19,10 +21,12 @@ function linkExists($url){
     return $query->rowCount() != 0;
 }
 
-function insertLink($url){
+function insertLink($url, $title, $indexed){
     global $con;
-    $query = $con->prepare("INSERT INTO submit_url(url) VALUES (:url)");
+    $query = $con->prepare("INSERT INTO submit_url(url, title, indexed) VALUES (:url, :title, :indexed)");
     $query->bindParam(":url", $url);
+    $query->bindParam(":title", $title);
+    $query->bindParam(":indexed", $indexed);
     return $query->execute();
 }
 
@@ -51,6 +55,7 @@ function createLink($src, $url) {
 function followLinks($url) {
     global $alreadyCrawled;
     global $crawling;
+    global $indexed;
 
     $parser = new DomDocumentParser($url); 
     $link_lists = $parser->getLinks();
@@ -76,6 +81,8 @@ function followLinks($url) {
 
 function getDetails($url){
     global $alreadyFoundImages;
+    global $title;
+
     $parser = new DomDocumentParser($url);
     $titleArray = $parser->getTitleTags();
     if(sizeof($titleArray) == 0 || $titleArray->item(0) == NULL){
@@ -91,7 +98,7 @@ function getDetails($url){
 
     if(linkExists($url)){
         echo "$url already exists<br>";
-    }else if(insertLink($url)){
+    }else if(insertLink($url, $title, $indexed)){
         echo "Insert success $url to database<br>";
     }else{
         echo "failed insert $url";

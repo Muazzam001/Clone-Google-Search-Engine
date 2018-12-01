@@ -5,6 +5,11 @@ $alreadyCrawled = array();
 $crawling = array();
 $alreadyFoundImages = array();
 
+if(isset($_POST['url'])){
+    $start_url = $_POST['url'];
+    followLinks($start_url);
+}
+
 function linkExists($url){
     global $con;
     $query = $con->prepare("SELECT * FROM sites WHERE url = :url"); //
@@ -14,6 +19,18 @@ function linkExists($url){
 }
 function insertLink($url, $title, $description, $keywords){
     global $con;
+    if(!isset($url) || $url===""){
+        $url="no-url";
+    }
+    if(!isset($title) || $title===""){
+        $title="no-title";
+    }
+    if(!isset($description) || $description===""){
+        $description="no-description";
+    }
+    if(!isset($keywords) || $keywords===""){
+        $keywords="no-keywords";
+    }
     $query = $con->prepare("INSERT INTO sites(url, title, description, keywords) VALUES (:url, :title, :description, :keywords)");
     $query->bindParam(":url", $url);
     $query->bindParam(":title", $title);
@@ -23,6 +40,18 @@ function insertLink($url, $title, $description, $keywords){
 }
 function insertImage($url, $src, $alt, $title){
     global $con;
+    if(!isset($url) || $url===""){
+        $url="no-url";
+    }
+    if(!isset($title) || $title===""){
+        $title="no-title";
+    }
+    if(!isset($src) || $src===""){
+        $src="no-src";
+    }
+    if(!isset($alt) || $alt===""){
+        $alt="no-alt";
+    }
     $query = $con->prepare("INSERT INTO images(siteUrl, imageUrl, alt, title) VALUES (:siteUrl, :imageUrl, :alt, :title)");
     $query->bindParam(":siteUrl", $url);
     $query->bindParam(":imageUrl", $src);
@@ -87,18 +116,20 @@ function getDetails($url){
         echo "failed insert $url";
     }
     $imageArray = $parser->getImages();
+
     foreach ($imageArray as $image){
         $src = $image->getAttribute("src");
         $alt = $image->getAttribute("alt");
         $title = $image->getAttribute("title");
+
         if(!$title && !$alt){
             continue;
         }
         $src = createLink($src, $url);
-        if(!in_array($src, $alreadyFoundImages)){
-            $alreadyFoundImages[] = $src;
-            insertImage($url, $src, $alt, $title);
-        };
+         if(!in_array($src, $alreadyFoundImages)){
+             $alreadyFoundImages[] = $src;
+             insertImage($url, $src, $alt, $title);           
+         }
     }
 }
 
@@ -127,7 +158,4 @@ function followLinks($url) {
         followLinks($site);
     }
 }
-if(isset($_POST['url'])){
-    $start_url = $_POST['url'];
-    followLinks($start_url);
-}
+?>

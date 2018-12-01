@@ -33,10 +33,10 @@
             $.ajax({
                 type: 'post',
 				// updated ajax request file name here
-                url: 'insert.php',
+                url: 'crawl.php',
                 data: $('form').serialize(),
                 success: function () {
-                    $("#buttonSubmit").text('disabled', false);
+                    $("#buttonSubmit").prop('disabled', false);
                     $( ".textGradient" ).html( "The system has received the url" );
                 }
             });
